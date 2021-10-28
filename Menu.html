@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-</head>
-<body>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Navbar</a>
@@ -33,22 +24,28 @@
           </div>
         </div>
       </nav>
-    <script src="js/jquery-3.6.0.min.js"></script>
-    <script src="js/bootstrap.esm.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
     <script>
-        var urlequipos = "https://apichampions.azurewebsites.net/"
+        var urlapi = "https://apichampions.azurewebsites.net/"
         $(document).ready(function(){
-
+          cargarMenu();
         });
 
         function cargarMenu(){
             var request = "api/Equipos";
+            var html = "";
             $.ajax({
-
+              "url": urlapi + request 
+              ,"type": "GET"
+              , success: function(data){
+                console.log(data);
+                $.each(data,function(index,equipo){
+                  html+="<li>";
+                  html+="<a href=DetallesEquipo.html/"+ equipo.idEquipo + ">" + equipo.mombre + "</a>";
+                  html+="</li>";
+                });
+                $("#equiposmenu").html(html);
+              }
             });
         }
 
     </script>
-</body>
-</html>
