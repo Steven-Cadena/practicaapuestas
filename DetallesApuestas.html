@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="/js/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div id="menu"></div>
+  <div class="container">
+    <button id="btn_hacer_apuesta" class="btn btn-warning">Hacer apuesta</button>
+    <table class="table" id="table_res">
+      <thead>
+        <tr>
+          <th scope="col">Usuario</th>
+          <th scope="col">Resultado</th>
+          <th scope="col">Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      const params = Object.fromEntries(urlSearchParams.entries());
+      var url_api_apuestas = "https://apichampions.azurewebsites.net";
+      $("#menu").load("./index.html");
+      var request = "/api/Apuestas";
+
+      $.ajax({
+        "url": url_api_apuestas + request,
+        "method": "GET",
+        "dataType": "json",
+        "success": function (data) {
+          $.each(data, function (index, apuesta) {
+            var row = $("<tr>");
+            row.append($("<td>", { "text": apuesta.usuario }));
+            row.append($("<td>", { "text": apuesta.resultado }));
+            row.append($("<td>", { "text": apuesta.fecha }));
+            
+            $("#table_res tbody").append(row);
+          })
+
+        },
+        "error": function (error) {
+          console.log(error);
+        }
+      });//ajax
+
+
+      $("#btn_hacer_apuesta").click(function(){
+        window.location.replace("./hacerapuesta.html");
+      });
+
+
+
+    }); //docready
+  </script>
+</body>
+
+</html>

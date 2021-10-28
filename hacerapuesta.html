@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+<body>
+    <div id="menu"></div>
+    <div class="container">
+        
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="inputUsuario" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Real Madrid</label>
+              <input type="number" class="form-control" id="inputReal">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Atlético de Madrid</label>
+                <input type="number" class="form-control" id="inputAtleti">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Fecha</label>
+                <input type="text" class="form-control" id="inputFecha" placeholder="dd/mm/yy">
+              </div>
+            <button id="btn_guardar_apuesta" class="btn btn-primary">Guardar apuesta</button>
+          
+    </div>
+    
+
+    <script>
+        $(document).ready(function(){
+
+            var url_api_apuestas = "https://apichampions.azurewebsites.net";
+
+            $("#menu").load("./index.html");
+
+            $("#btn_guardar_apuesta").click(function(){
+                var request = "/api/Apuestas";
+                var apuesta = {
+                    "usuario":$("#inputUsuario").val(),
+                    "resultado":$("#inputReal").val() + "-" + $("#inputAtleti").val(),
+                    "fecha":$("#inputFecha").val()
+                }
+
+                console.log(apuesta);
+                $.ajax({
+                    "url":url_api_apuestas + request,
+                    "method":"POST",
+                    "data":JSON.stringify(apuesta),
+                    "contentType":"application/json",
+                    "success":function(data){
+                        console.log("se ha hecho la apuesta");
+                        window.location.replace("./DetallesApuestas.html")
+                    },
+                    "error":function(error){
+                        console.log(error);
+                    }
+                });
+            });
+
+        });//doc ready
+    </script>
+    
+</body>
+</html>

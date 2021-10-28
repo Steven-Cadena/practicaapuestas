@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+<body>
+    <div id="menu"></div>
+    <div class="container">
+        <div class="card">
+            <h5 class="card-header" id="nombreJugador">Featured</h5>
+            <div class="card-body">
+                <img id="imgJugador"></img>
+              <h5 class="card-title" id="posicionJugador">Special title treatment</h5>
+              <p class="card-text" id="fechaJugador">With supporting text below as a natural lead-in to additional content.</p>
+              <p class="card-text" id="paisJugador">With supporting text below as a natural lead-in to additional content.</p>
+              <a id="btn_jugadores" class="btn btn-success">Jugadores</a>
+            </div>
+          </div>
+    </div>
+    
+
+    <script>
+        $(document).ready(function(){
+
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            var url_api_apuestas = "https://apichampions.azurewebsites.net";
+            $("#menu").load("./index.html");
+
+            var request = "/api/Jugadores/" + params.idJugador;
+
+            $.ajax({
+                "url":url_api_apuestas + request,
+                "method":"GET",
+                "dataType":"json",
+                "success":function(data) {
+                    console.log(data);
+                    $("#nombreJugador").text(data.nombre);
+                    $("#imgJugador").attr("src", data.imagen);
+                    $("#posicionJugador").text(data.posicion);
+                    $("#fechaJugador").text(data.fechaNacimiento);
+                    $("#paisJugador").text(data.pais);
+                    $("#btn_jugadores").click(function() {
+                        window.location.replace("./detallejugadores.html?idEquipo=" + data.idEquipo);
+                    });
+                },
+                "error":function(error) {
+                    console.log(error);
+                }
+            });//ajax
+
+
+        });
+
+
+    </script>
+    
+</body>
+</html>

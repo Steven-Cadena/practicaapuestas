@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+<body>
+    <div id="menu"></div>
+    <div class="container">
+        <table class="table" id="table_result">
+            <thead>
+                <th>Nombre</th>
+                <th>Imagen</th>
+                <th>Detalles</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+            
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            var url_api_apuestas = "https://apichampions.azurewebsites.net";
+            $("#menu").load("./index.html");
+            var request = "/api/Jugadores/JugadoresEquipo/" + params.idEquipo;
+
+            $.ajax({
+                "url":url_api_apuestas + request,
+                "method":"GET",
+                "dataType":"json",
+                "success": function(data) {
+                    $.each(data, function(index, jugador) {
+                        console.log(jugador);
+                        
+                        var row = $("<tr>");
+                        row.append($("<td>", {"text":jugador.nombre}));
+                        row.append($("<td>").append($("<img>").attr("src", jugador.imagen)));
+                        row.append($("<td>").append($("<btn>", {"text":"Detalles"}).attr("class", "btn btn-secondary").click(function(){
+                            window.location.replace("./detallesjugador.html?idJugador=" + jugador.idJugador)
+                        })));
+                        $("#table_result tbody").append(row);
+
+                    });
+                }, 
+                "error": function(error) {
+                    console.log(error);
+                }
+            });//ajax
+        });//docready
+    </script>
+    
+    <!-- boostrap js -->
+    <!-- <script src="/lib/js/bootstrap.bundle.min.js"></script> -->
+</body>
+</html>
