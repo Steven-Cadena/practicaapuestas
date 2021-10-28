@@ -43,7 +43,7 @@
                         var row = $("<tr>");
                         row.append($("<td>", {"text":jugador.nombre}));
                         row.append($("<td>").append($("<img>").attr("src", jugador.imagen)));
-                        row.append($("<td>").append($("<btn>", {"text":"Detalles"}).attr("class", "btn btn-secondary").click(function(){
+                        row.append($("<td>").append($("<button>", {"text":"Detalles"}).attr("class", "btn btn-secondary").click(function(){
                             window.location.replace("./detallesjugador.html?idJugador=" + jugador.idJugador)
                         })));
                         $("#table_result tbody").append(row);
